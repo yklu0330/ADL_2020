@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 import argparse
 import logging
 import os
@@ -34,7 +28,6 @@ class Encoder(nn.Module):
         self.embedding = nn.Embedding.from_pretrained(embedding_weight)
         self.rnn = nn.LSTM(embed_size, rnn_hidden_size, layer_num, batch_first=True, bidirectional=True)
         self.linear=nn.Linear(rnn_hidden_size * 2, rnn_hidden_size)
-        # init a LSTM/RNN
 
     def forward(self, idxs) -> Tuple[torch.tensor, torch.tensor]:
         embed = self.embedding(idxs)
@@ -90,8 +83,6 @@ args = parser.parse_args()
 BATCH_SIZE = int(args.batch_size) ## 16
 LEARN_RATE = float(args.learn_rate) ## 0.001
 
-
-
 with open('embedding2.pkl', 'rb') as f1:
 	embedDs = pickle.load(f1)
 
@@ -99,26 +90,10 @@ with open('train.pkl', 'rb') as f:
 	trainDS = pickle.load(f)
 
 
-# In[11]:
-
-
-
-
-
-# In[10]:
-
-
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 loader = DataLoader(trainDS, BATCH_SIZE, shuffle=True, collate_fn=trainDS.collate_fn)
 encoder = Encoder('embedding2.pkl', 300, 128, 1).to(device)
 decoder = Decoder('embedding2.pkl', 300, 128, 1, len(embedDs.vocab)).to(device)
-
-# ckpt = torch.load('ckpt_a.2.pt')
-# encoder.load_state_dict(ckpt['enc_state_dict'])
-# encoder.train()
-# decoder.load_state_dict(ckpt['dec_state_dict'])
-# decoder.train()
-
 
 teacher_forcing_ratio = 1
 loss_func = nn.CrossEntropyLoss(ignore_index=0)
@@ -176,10 +151,6 @@ for epoch in range(3):
     )
 
     print("epoch: %d, loss: %f" %(epoch, lossSum / len(loader)))
-
-
-# In[ ]:
-
 
 
 

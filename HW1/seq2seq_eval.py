@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import argparse
 import logging
 import os
@@ -34,7 +28,6 @@ class Encoder(nn.Module):
         self.embedding = nn.Embedding.from_pretrained(embedding_weight)
         self.rnn = nn.LSTM(embed_size, rnn_hidden_size, layer_num, batch_first=True, bidirectional=True)
         self.linear=nn.Linear(rnn_hidden_size * 2, rnn_hidden_size)
-        # init a LSTM/RNN
 
     def forward(self, idxs) -> Tuple[torch.tensor, torch.tensor]:
         embed = self.embedding(idxs)
@@ -69,14 +62,9 @@ class Decoder(nn.Module):
         output = output.squeeze(1)
         return output, hidden, cell
 
-
-# In[2]:
-
 parser = ArgumentParser()
-# parser.add_argument('--test_data_path')
 parser.add_argument('--output_path')
 args = parser.parse_args()
-
 
 with open('embedding2.pkl', 'rb') as f1:
     embedding = pickle.load(f1)
@@ -84,10 +72,6 @@ with open('embedding2.pkl', 'rb') as f1:
 
 with open('valid_seq2seq.pkl', 'rb') as f:
     validDS = pickle.load(f)
-
-
-# In[42]:
-
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 loader = DataLoader(validDS, 16, shuffle=False, collate_fn=validDS.collate_fn)
@@ -100,16 +84,10 @@ encoder.eval()
 decoder.load_state_dict(ckpt['dec_state_dict'])
 decoder.eval()
 
-
 loss_func = nn.CrossEntropyLoss(ignore_index=0)
-
 
 lossSum = 0
 targetMaxLen = 80
-
-
-# In[45]:
-
 
 with open(args.output_path, "w") as optFile:
     with torch.no_grad():
@@ -152,16 +130,5 @@ with open(args.output_path, "w") as optFile:
                 optFile.write("\n")
                 
 optFile.close()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 
 

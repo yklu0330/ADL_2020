@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import argparse
 import logging
 import os
@@ -34,7 +28,6 @@ class Encoder(nn.Module):
         self.embedding = nn.Embedding.from_pretrained(embedding_weight)
         self.rnn = nn.LSTM(embed_size, rnn_hidden_size, layer_num, batch_first=True, bidirectional=True)
         self.linear=nn.Linear(rnn_hidden_size * 2, rnn_hidden_size)
-        # init a LSTM/RNN
 
     def forward(self, idxs) -> Tuple[torch.tensor, torch.tensor]:
         embed = self.embedding(idxs)
@@ -69,10 +62,8 @@ class Decoder(nn.Module):
         query = rnn_out.permute(0, 2, 1)
         attn_weight = torch.bmm(enc_out, query)
         attn_weight = F.softmax(attn_weight, dim=1)
-
         attn_weight2 = attn_weight.permute(0, 2, 1)
         context = torch.bmm(attn_weight2, enc_out)
-        
         cat = torch.cat((context, rnn_out), dim=2)
 
         dec_out = self.linear(cat)
@@ -80,20 +71,12 @@ class Decoder(nn.Module):
 
         return dec_out, hidden, cell, attn_weight
 
-
-# In[2]:
-
-
 with open('embedding2.pkl', 'rb') as f1:
     embedding = pickle.load(f1)
     embedding_weight = embedding.vectors
 
 with open('valid.pkl', 'rb') as f:
     validDS = pickle.load(f)
-
-
-# In[3]:
-
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 loader = DataLoader(validDS, 1, shuffle=False, collate_fn=validDS.collate_fn)
@@ -108,10 +91,6 @@ decoder.eval()
 
 loss_func = nn.CrossEntropyLoss(ignore_index=0)
 
-
-# In[15]:
-
-
 lossSum = 0
 targetMaxLen = 80
 input_sentence = ""
@@ -123,14 +102,12 @@ with open('output4.jsonl', "w") as optFile:
             predSen = ""
             batchInput = data['text'].to(device)
             batchSize = batchInput.shape[0]
-            print(batchInput.shape[1])
 
             enc_out, hid, cell = encoder(batchInput)
 
             decInput = torch.ones(batchSize)
             decInput = decInput.long().to(device)
             targetLen = data['len_summary']
-            print(targetLen)
 
             outputTs = torch.zeros(batchSize, targetMaxLen, len(embedding.vocab)).to(device)
             predIdx = torch.zeros(batchSize, targetMaxLen)
@@ -142,7 +119,6 @@ with open('output4.jsonl', "w") as optFile:
                     attn_weight = attn_weight.squeeze(dim=1)
                     attn_mat[t-1] = attn_weight
                 attentions = attn_mat
-#                 print(attn_mat)
                 softmax = F.softmax(dec_out, dim=1)
                 maxVal, maxIdx = torch.max(softmax, 1)
 
@@ -180,14 +156,7 @@ with open('output4.jsonl', "w") as optFile:
 
 optFile.close()
 
-
-# In[34]:
-
-
-# def showAttention(input_sentence, output_words, attentions):
-# Set up figure with colorbar
 attentions = attentions.permute(1, 0)
-print(attentions.shape)
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
@@ -197,20 +166,12 @@ ax = fig.add_subplot(111)
 cax = ax.matshow(attentions.cpu().numpy(), cmap='bone')
 fig.colorbar(cax)
 
-# Set up axes
-ax.set_xticklabels([''] + output_words.split(' ') +
-                   ['<EOS>'], rotation=90)
+ax.set_xticklabels([''] + output_words.split(' ') + ['<EOS>'], rotation=90)
 ax.set_yticklabels([''] + input_sentence.split(' ') + ['<EOS>'])
 
-# Show label at every tick
 ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
 ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
   
 plt.show()
-
-
-# In[ ]:
-
-
 
 

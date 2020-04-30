@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[15]:
-
-
 import argparse
 import logging
 import os
@@ -34,7 +28,6 @@ class Encoder(nn.Module):
         self.embedding = nn.Embedding.from_pretrained(embedding_weight)
         self.rnn = nn.LSTM(embed_size, rnn_hidden_size, layer_num, batch_first=True, bidirectional=True)
         self.linear=nn.Linear(rnn_hidden_size * 2, rnn_hidden_size)
-        # init a LSTM/RNN
 
     def forward(self, idxs) -> Tuple[torch.tensor, torch.tensor]:
         embed = self.embedding(idxs)
@@ -79,22 +72,11 @@ args = parser.parse_args()
 BATCH_SIZE = int(args.batch_size) ## 10
 LEARN_RATE = float(args.learn_rate) ## 0.001
 
-# In[2]:
-
-
 with open('embedding2.pkl', 'rb') as f1:
 	embedDs = pickle.load(f1)
-# print(len(embedDs.vocab))
-
-
-# In[3]:
-
 
 with open('train.pkl', 'rb') as f:
 	trainDS = pickle.load(f)
-
-
-# In[65]:
 
 with open('valid.pkl', 'rb') as f:
     validDS = pickle.load(f)
@@ -115,7 +97,6 @@ for epoch in range(3):
     for step, data in enumerate(tqdm(loader)):
         batchInput = data['text'].to(device)
         batchSize = batchInput.shape[0]
-    #     dataLen = batchInput.shape[1]
         optimizer.zero_grad()
 
         hid, cell = encoder(batchInput)
@@ -161,9 +142,5 @@ for epoch in range(3):
     )
 
     print("epoch: %d, loss: %f" %(epoch, lossSum / len(loader)))
-
-
-
-
 
 

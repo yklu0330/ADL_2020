@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import argparse
 import logging
 import os
@@ -71,7 +65,6 @@ class Decoder(nn.Module):
         attn_weight = F.softmax(attn_weight, dim=1)
         attn_weight = attn_weight.permute(0, 2, 1)
         context = torch.bmm(attn_weight, enc_out)
-        
         cat = torch.cat((context, rnn_out), dim=2)
 
         dec_out = self.linear(cat)
@@ -80,11 +73,8 @@ class Decoder(nn.Module):
         return dec_out, hidden, cell
 
 parser = ArgumentParser()
-# parser.add_argument('--test_data_path')
 parser.add_argument('--output_path')
 args = parser.parse_args()
-
-
 
 with open('embedding2.pkl', 'rb') as f1:
     embedding = pickle.load(f1)
@@ -92,10 +82,6 @@ with open('embedding2.pkl', 'rb') as f1:
 
 with open('valid_seq2seq.pkl', 'rb') as f:
     validDS = pickle.load(f)
-
-
-# In[7]:
-
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 loader = DataLoader(validDS, 16, shuffle=False, collate_fn=validDS.collate_fn)
@@ -109,10 +95,6 @@ decoder.load_state_dict(ckpt['dec_state_dict'])
 decoder.eval()
 
 loss_func = nn.CrossEntropyLoss(ignore_index=0)
-
-
-# In[ ]:
-
 
 lossSum = 0
 targetMaxLen = 80
@@ -158,23 +140,5 @@ with open(args.output_path, "w") as optFile:
         print("loss: %f" %(lossSum / len(loader)))
 
 optFile.close()
-
-# def showAttention(input_sentence, output_words, attentions):
-#     # Set up figure with colorbar
-#     fig = plt.figure()
-#     ax = fig.add_subplot(111)
-#     cax = ax.matshow(attentions.numpy(), cmap='bone')
-#     fig.colorbar(cax)
-
-#     # Set up axes
-#     ax.set_xticklabels([''] + input_sentence.split(' ') +
-#                        ['<EOS>'], rotation=90)
-#     ax.set_yticklabels([''] + output_words)
-
-#     # Show label at every tick
-#     ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
-#     ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
-
-#     plt.show()
 
 

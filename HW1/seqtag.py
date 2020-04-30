@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[21]:
-
-
 import argparse
 import logging
 import os
@@ -34,16 +28,12 @@ class Model(nn.Module):
         self.embedding = nn.Embedding.from_pretrained(embedding_weight)
         self.rnn = nn.LSTM(embed_size, rnn_hidden_size, layer_num, batch_first=True, bidirectional=True)
         self.linear=nn.Linear(rnn_hidden_size * 2, 1)
-        # init a LSTM/RNN
 
     def forward(self, idxs) -> Tuple[torch.tensor, torch.tensor]:
         embed = self.embedding(idxs)
         output, state = self.rnn(embed)
         output = self.linear(output)
         return output, state
-
-
-# In[14]:
 
 parser = ArgumentParser()
 parser.add_argument('--batch_size')
@@ -60,18 +50,11 @@ with open('train.pkl', 'rb') as f:
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 loader = DataLoader(trainDS, BATCH_SIZE, shuffle=False, collate_fn=trainDS.collate_fn)
 
-# In[22]:
-
-
 model = Model('embedding.pkl', 300, 128, 2).to(device)
 loss_fnc = nn.BCEWithLogitsLoss(
     reduction='none', 
     pos_weight=torch.tensor(7))
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARN_RATE)
-
-
-# In[52]:
-
 
 for epoch in range(5):
     lossSum = 0
