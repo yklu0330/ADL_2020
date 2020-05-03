@@ -12,14 +12,14 @@ This project uses [PyTorch](https://pytorch.org/), json, pickle. Go check them o
 ### How to train
 Before training, you should have train.jsonl, valid.jsonl, test.jsonl in the same directory.
 #### 1. seqtag
-``$ python3.6 preprocess_seq_tag_train.py .``  
+``$ python3.6 preprocess_seq_tag_train.py /PATH_TO_CONFIG_FILE``  
 ``$ python3.6 seqtag.py --batch_size 10 --learn_rate 0.001``  
 #### 2. seq2seq
-``$ python3.6 preprocess_seq2seq_train.py .``  
+``$ python3.6 preprocess_seq2seq_train.py /PATH_TO_CONFIG_FILE``  
 ``$ python3.6 seq2seq_train.py --batch_size 10 --learn_rate 0.001``  
 
 #### 3. attention
-``$ python3.6 preprocess_seq2seq_train.py .``  
+``$ python3.6 preprocess_seq2seq_train.py /PATH_TO_CONFIG_FILE``  
 ``$ python3.6 attention_train.py --batch_size 10 --learn_rate 0.001``  
 
 ### How to plot the figures in my report
