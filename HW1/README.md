@@ -38,7 +38,7 @@ positional arguments:
     output_path      Prediction result save file
 ```
 #### Example
-``python3 preprocess_seq_tag.py --valid_data_path test.jsonl`` 
+``python3 preprocess_seq_tag.py --valid_data_path test.jsonl``  
 ``python3 seqtag_eval.py --output_path ./output.jsonl``
 
 #### Sample input
