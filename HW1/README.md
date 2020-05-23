@@ -1,4 +1,5 @@
-# ADL_HW1
+# ADL_HW1 - Summarization
+Implement extractive summarization and abstractive summarization w/ and w/o attention.
 
 **The preprocessing code files are provided by the TAs of this course, including preprocess_seq_tag_train.py, preprocess_seq_tag.py, preprocess_seq2seq_train.py, preprocess_seq2seq.py, dataset.py, dataset2.py, utils.py.**
 

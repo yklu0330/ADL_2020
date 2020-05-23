@@ -1,4 +1,5 @@
-# ADL_HW2
+# ADL_HW2 - BERT for QA
+Fine-tune BERT on the Chinese question answering task.
 
 ### Install
 This project uses [PyTorch](https://pytorch.org/), [transformers](https://huggingface.co/transformers/installation.html). Go check them out if you don't have them locally installed.
