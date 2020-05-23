@@ -3,13 +3,49 @@
 ### Install
 This project uses [PyTorch](https://pytorch.org/), [transformers](https://huggingface.co/transformers/installation.html). Go check them out if you don't have them locally installed.
 
-``$ pip install torch torchvision``
+``$ pip install torch torchvision``  
 ``$ pip install transformers``
 
 ### How to train
-Before training, you should have **train.json** in the same directory. 
+```
+$ python3 train.py $1
 
-``$ python3 train.py``
+arguments: 
+    $1: train file (a json file)
+
+example:
+    $ python3 train.py train.json
+```
+#### Sample input
+- A **json** file  
+```
+{
+    'title': '国际足球联合会', 
+    'id': '1002', 
+    'paragraphs': [
+        {
+            'context': '國際足球總會是管理英式足球、室內五人足球和沙灘足球的國際管理機構，下轄211個會員協會。總部設於瑞士蘇黎世。現任會長為吉安尼·因凡蒂諾。國際足總負責組織世界重大足球賽事，最著名的是世界盃。國際足總首屆會長是羅伯特·格林。接替他的是英格蘭足總的丹尼爾·伯利·伍爾福爾。國際足總組織的首個大型賽事是1908年倫敦奧運會足球淘汰賽，比賽很成功，參賽的是各國的職業運動員，而此後的奧運會就限制職業球員參加，並對於球員健全的身體有嚴格的檢驗機制，曾在1912年禁止有割盲腸者加入。一戰時英格蘭、蘇格蘭、威爾斯和北愛爾蘭的足總退出了國際足總，聲明不願與敵人交手，後來又重新加入了。國際足總歷史藏品位於英國的國家足球博物館。2004年舉行了國際足球總會成立100周年紀念活動，2004年4月，該組織宣布在2003年至2006年期間總收入將達到16.4億美元，總利潤將達到1.44億美元。2004年5月20日，為了紀念國際足球總會誕生100周年，巴西國家足球隊與法國國家足球隊舉行了一場紀念賽，最終雙方以0-0握手言和。', 
+            'id': '1002-1', 
+            'qas': [
+                {'id': 'e8bf3babc182c6deaaf608b40b3f9e6ad83ec480c2c1a19897242292', 'question': '組織世界盃的機構的主要據點在哪？', 'answers': [{'id': '1', 'text': '瑞士蘇黎世', 'answer_start': 48}], 'answerable': True}, 
+                {'id': 'bdbd53623618f7c7385d9d726de03bc3b578dc8d3cd5bb950bfe60f2', 'question': '奧運在甚麼時候割盲腸者的參賽會被拒絕？', 'answers': [{'id': '1', 'text': '1912年', 'answer_start': 220}], 'answerable': True}, 
+                {'id': '1b57af7395961be479dbce88c0500dc609b57bd5bddeff490b3c3999', 'question': '為紀念國際足球總會誕生100周年的巴西跟法國國家足球隊紀念賽結果分數為？', 'answers': [{'id': '1', 'text': '0-0', 'answer_start': 444}], 'answerable': True}
+            ]
+        }, 
+        {
+            'context': '國際足總基於瑞士法律成立，總部位於蘇黎世。其最高權力機構是國際足總議會，由各成員國代表組成。只有議會有權修訂國際足總章程。議會每年開會一次決定各項事務，確認年報，批准新會員，在世界盃舉辦的次年選舉國際足總會長、秘書長和其他國際足總理事會成員，每個國家足總有一票的投票權。國際足總會長和秘書長是國際足球總會主要官員，負責日常事務管理，下轄的秘書辦公室有211名成員。國際足球總會執行委員會的會長是國際足總會長，在國際足總議會不召開的時候決定各項事務。國際足球總會還有一些其他的組織，包括金融委員會、紀律委員會、裁判委員會等。除去這些，還有六個被國際足球總會認證的管理各大洲足球聯盟或協會，他們分別是亞洲足球聯盟：亞足協有47個會員，而北馬里亞納群島並未加入國際足球總會，澳大利亞在2006年加入亞足協；非洲足球聯盟：非足協有54個正式會員和2個準會員，2個準會員均未加入國際足球總會；中北美洲及加勒比海足球聯盟：中北美洲及加勒比海足球聯盟有41個會員，但其中有6個不是國際足球總會成員，蓋亞那、法屬蓋亞那和蘇利南在南美，但其足總屬於中北美洲及加勒比海足球聯盟，法屬蓋亞那足總不是國際足球總會成員；南美洲足球聯盟：南美洲只有10個會員，是六個協會中成員最少而平均水平最高的協會；大洋洲足球聯盟：大洋洲足總有14個會員，但其中有3個不是國際足球總會成員；歐洲足球總會：歐足總共有55個成員，2016年5月，國際足總第66屆大會上正式投票通過了科索沃和直布羅陀加入國際足總的決議。跨洲國家俄羅斯、土耳其和哈薩克斯坦的足總都是歐足總成員，以色列地理位置屬亞洲，因政治原因加入歐足總。', 
+            'id': '1002-2', 
+            'qas': [
+                {'id': '877640a33e33a493c41394b53a7f246920e8ea889347c616646817b6', 'question': '國際足總議會中在表決時每一國可以投幾票？', 'answers': [{'id': '1', 'text': '一', 'answer_start': 128}], 'answerable': True}, 
+                {'id': 'bfb58764200124d87b68a412905fbc06a20e0802ac5dbb4246bbb136', 'question': '在亞洲中什麼國家有加入亞足協但未加入國際足球總會？', 'answers': [{'id': '1', 'text': '北馬里亞納群島', 'answer_start': 316}], 'answerable': True}, 
+                {'id': '43ee9ed0460993072c5fc95e9ad9379056495ec92e6a79eb187979df', 'question': '哪一個地區的足球總會有3個會員國不是國際足球總會的會員國？', 'answers': [{'id': '1', 'text': '大洋洲', 'answer_start': 545}], 'answerable': True}, 
+                {'id': 'bdfef6e1f68c7322350ddfd0aaf1edee3a7f7ce15dbd48910c806eb9', 'question': '國際足總會長布拉特表示是哪一區的球員讓他從反對門線技術轉而支持？', 'answers': [{'id': 1, 'text': '', 'answer_start': -1}], 'answerable': False}
+            ]
+        }
+}
+```
+#### Sample output
+- A model file: ``ckpt20.0.pt``
 
 ### How to test
 ```

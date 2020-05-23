@@ -15,6 +15,7 @@ import torch.optim as optim
 from tqdm import tqdm
 from transformers import BertTokenizer, BertForQuestionAnswering
 from transformers import BertForSequenceClassification
+import sys
 
 
 PRETRAINED_MODEL_NAME = "bert-base-chinese"
@@ -44,7 +45,7 @@ class Paragraph():
 contextDic = {}
 pDictList = []
 
-with open('train.json', 'r') as trainFile:
+with open('sys.argv[1]', 'r') as trainFile:
     dic = json.load(trainFile)
     dataNum = len(dic['data'])
     for i in tqdm(range(dataNum)):
