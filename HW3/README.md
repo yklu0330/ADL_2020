@@ -98,7 +98,7 @@ to
 ```
 from agent_dir.plot_agent_pg import AgentPG
 ```
-and run the following command.
+and run the following command.  
 ``$ python3 main.py --train_pg``
 
 ### Learning curve of DQN:
@@ -110,7 +110,7 @@ to
 ```
 from agent_dir.plot_agent_dqn import AgentDQN
 ```
-and run the following command.
+and run the following command.  
 ``$ python3 main.py --train_dqn``
 
 ### Learning curve of DQN & Double DQN & Dueling DQN:
@@ -134,7 +134,7 @@ from agent_dir.plot_agent_duel_dqn import AgentDQN
 agent = AgentDQN(env, args)
 agent.train()
 ```
-and run the following command.
+and run the following command.  
 ```
 $ python3 main.py --train_dqn
 $ python3 agent_dir/plot_dqn_improve.py
