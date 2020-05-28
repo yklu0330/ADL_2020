@@ -13,10 +13,6 @@ use_cuda = torch.cuda.is_available()
 
 
 class DQN(nn.Module):
-    '''
-    This architecture is the one from OpenAI Baseline, with small modification.
-    '''
-
     def __init__(self, channels, num_actions):
         super(DQN, self).__init__()
         self.conv1 = nn.Conv2d(channels, 32, kernel_size=8, stride=4)
@@ -109,7 +105,6 @@ class AgentDQN(Agent):
 
         self.steps = 0  # num. of passed steps
 
-        # TODO: initialize your replay buffer
         self.replayBuf = ReplayBuffer(self.buffer_size)
 
     def save(self, save_path):
@@ -135,11 +130,6 @@ class AgentDQN(Agent):
         pass
 
     def make_action(self, state, test=False):
-        # TODO:
-        # Implement epsilon-greedy to decide whether you want to randomly select
-        # an action or not.
-        # HINT: You may need to use and self.steps
-
         # test
         if test == True:
             state = torch.from_numpy(state).permute(2, 0, 1).unsqueeze(0)
@@ -163,17 +153,6 @@ class AgentDQN(Agent):
         return action
 
     def update(self):
-        # TODO:
-        # step 1: Sample some stored experiences as training examples.
-        # step 2: Compute Q(s_t, a) with your model.
-        # step 3: Compute Q(s_{t+1}, a) with target model.
-        # step 4: Compute the expected Q values: rewards + gamma * max(Q(s_{t+1}, a))
-        # step 5: Compute temporal difference loss
-        # HINT:
-        # 1. You should not backprop to the target model in step 3 (Use torch.no_grad)
-        # 2. You should carefully deal with gamma * max(Q(s_{t+1}, a)) when it
-        #    is the terminal state.
-
         sampleBuf = self.replayBuf.sample(self.batch_size)
         states = torch.tensor([])
         actions = torch.tensor([])
@@ -232,7 +211,6 @@ class AgentDQN(Agent):
                 next_state = torch.from_numpy(
                     next_state).permute(2, 0, 1).unsqueeze(0)
 
-                # TODO: store the transition in memory
                 self.replayBuf.setItem(state, action, next_state, reward)
 
                 # move to the next state
@@ -242,7 +220,6 @@ class AgentDQN(Agent):
                 if self.steps > self.learning_start and self.steps % self.train_freq == 0:
                     loss = self.update()
 
-                # TODO: update target network
                 if self.steps > self.learning_start and self.steps % self.target_update_freq == 0:
                     self.target_net.load_state_dict(
                         self.online_net.state_dict())

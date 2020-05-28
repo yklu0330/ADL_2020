@@ -1,10 +1,5 @@
-"""
-
-### NOTICE ###
-You DO NOT need to upload this file
-
-"""
 from environment import Environment
+
 
 class Agent(object):
     def __init__(self, env):
@@ -29,7 +24,6 @@ class Agent(object):
                 the predicted action from trained model
         """
         raise NotImplementedError("Subclasses should implement this!")
-
 
     def init_game_setting(self):
         """

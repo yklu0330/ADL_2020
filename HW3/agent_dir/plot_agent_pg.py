@@ -60,9 +60,6 @@ class AgentPG(Agent):
         self.action_prob = []
 
     def make_action(self, state, test=False):
-        # action = self.env.action_space.sample()  # TODO: Replace this line!
-        # Use your model to output distribution over actions and sample from it.
-        # HINT: torch.distributions.Categorical
         state = torch.tensor(state).unsqueeze(0)
         actions = self.model(state)
         m = torch.distributions.Categorical(actions)
@@ -71,18 +68,12 @@ class AgentPG(Agent):
         return action.item()
 
     def update(self):
-        # TODO:
-        # discount reward
-        # R_i = r_i + GAMMA * R_{i+1}
         R_i = 0
         reward = []
         for r_i in self.rewards[::-1]:
             R_i = r_i + self.gamma * R_i
             reward.insert(0, R_i)
 
-        # TODO:
-        # compute PG loss
-        # loss = sum(-R_i * log(action_prob))
         loss = 0
         for R_i, action_prob in zip(reward, self.action_prob):
             loss += -R_i * action_prob
