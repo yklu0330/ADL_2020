@@ -1,42 +1,72 @@
-# ADL HW3
-Please don't revise test.py, environment.py,  atari_wrapper.py,  agent_dir/agent.py
+# ADL_HW3
 
-## Installation
-Type the following command to install OpenAI Gym Atari environment.
+### Install
+This project uses [PyTorch](https://pytorch.org/) for training and testing. Go check them out if you don't have them locally installed.
 
-`$ pip3 install opencv-python gym gym[atari]`
+``$ pip3 install torch torchvision``
 
-Please refer to [OpenAI's page](https://github.com/openai/gym) if you have any problem while installing.
+For plotting results, it uses **ta-lib**, **matplotlib**.
+To install **ta-lib**, please download the .whl file by the [link](https://www.lfd.uci.edu/~gohlke/pythonlibs/#ta-lib) first and type the following command.
 
-## How to run :
-training policy gradient:
-* `$ python3 main.py --train_pg`
+``$ pip3 install <whl_file>``
 
-testing policy gradient:
-* `$ python3 test.py --test_pg`
+### How to train
 
-training DQN:
-* `$ python3 main.py --train_dqn`
+#### Training policy gradient:  
+``$ python3 main.py --train_pg``
 
-testing DQN:
-* `$ python3 test.py --test_dqn`
+#### Training DQN:
+``$ python3 main.py --train_dqn``
 
-If you want to see your agent playing the game,
-* `$ python3 test.py --test_[pg|dqn] --do_render`
+### How to plot the figures in my report
 
-
-## Code structure
-
+#### Learning curve of policy gradient:
+Modify main.py from  
 ```
-.
-├── agent_dir (all agents are placed here)
-│   ├── agent.py (defined 4 required functions of the agent. DO NOT MODIFY IT)
-│   ├── agent_dqn.py (DQN agent sample code)
-│   └── agent_pg.py (PG agent sample code)
-├── argument.py (you can add your arguments in here. we will use the default value when running test.py)
-├── atari_wrapper.py (wrap the atari environment. DO NOT MODIFY IT)
-├── environment.py (define the game environment in HW3, DO NOT MODIFY IT)
-├── main.py (main function)
-└── test.py (test script. we will use this script to test your agents. DO NOT MODIFY IT)
+from agent_dir.agent_pg import AgentPG
+```
+to
+```
+from agent_dir.plot_agent_pg import AgentPG
+```
+and run the following command.
+``$ python3 main.py --train_pg``
 
+#### Learning curve of DQN:
+Modify main.py from  
+```
+from agent_dir.agent_dqn import AgentDQN
+```
+to
+```
+from agent_dir.plot_agent_dqn import AgentDQN
+```
+and run the following command.
+``$ python3 main.py --train_dqn``
+
+#### Learning curve of DQN & Double DQN & Dueling DQN:
+Modify main.py
+```
+from agent_dir.agent_dqn import AgentDQN
+agent = AgentDQN(env, args)
+agent.train()
+```
+to
+```
+from agent_dir.plot_agent_dqn import AgentDQN
+agent = AgentDQN(env, args)
+agent.train()
+
+from agent_dir.plot_agent_double_dqn import AgentDQN
+agent = AgentDQN(env, args)
+agent.train()
+
+from agent_dir.plot_agent_duel_dqn import AgentDQN
+agent = AgentDQN(env, args)
+agent.train()
+```
+and run the following command.
+```
+$ python3 main.py --train_dqn
+$ python3 agent_dir/plot_dqn_improve.py
 ```
