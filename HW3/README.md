@@ -37,6 +37,8 @@ Epochs: 150/100000 | Avg reward: -178.804998
                     .
                     .
 ```
+and dump a model file **pg.cpt**.
+
 
 ### Training DQN:
 ``$ python3 main.py --train_dqn``
@@ -62,6 +64,8 @@ Episode: 140 | Steps: 20750/3000000 | Avg reward: 18.000000 | loss: 0.156334
                                     .
                                     .
 ```
+and dump model files **dqn_online.cpt** and **dqn_target.cpt**.
+
 
 ## How to test
 
